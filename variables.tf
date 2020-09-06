@@ -11,19 +11,16 @@ variable "vcd_pass" {
 variable "vcd_org" {
   type        = string
   description = "vCD organization"
-  default     = "CloudMTS-CPD"
 }
 
 variable "vcd_vdc" {
   type        = string
   description = "Virtual cloud datacenter"
-  default     = "CloudMTS-CPD-VDC"
 }
 
 variable "vcd_url" {
   type        = string
   description = "vCD API endpoint URL"
-  default     = "https://iaas.cloud.mts.ru/api"
 }
 
 variable "vcd_allow_unverified_ssl" {
