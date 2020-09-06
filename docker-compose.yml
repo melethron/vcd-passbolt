@@ -1,0 +1,49 @@
+version: "3.4"
+services:
+  web:
+    image: nginx:1.19
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - /data/certs:/etc/nginx/certs
+      - /data/config:/etc/nginx/conf.d/
+  db:
+    image: mariadb:10.3
+    restart: always
+    env_file:
+      - env/mysql.env
+    volumes:
+      - database_volume:/var/lib/mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+  passbolt:
+    image: passbolt/passbolt:2.13.5-debian
+    restart: always
+    tty: true
+    depends_on:
+      - db
+    env_file:
+      - env/passbolt.env
+    volumes:
+      - gpg_volume:/var/www/passbolt/config/gpg
+      - images_volume:/var/www/passbolt/webroot/img/public
+    tmpfs:
+      - /run
+    command:
+      [
+        "/usr/bin/wait-for.sh",
+        "-t",
+        "0",
+        "db:3306",
+        "--",
+        "/docker-entrypoint.sh",
+      ]
+    ports:
+      - "127.0.0.1:40080:80"
+      - "127.0.0.1:40443:443"
+volumes:
+  database_volume:
+  gpg_volume:
+  images_volume:
