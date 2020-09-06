@@ -4,7 +4,6 @@ terraform {
     key                         = "terraform.tfstate"
     region                      = "us-east-1"
     skip_credentials_validation = true
-    endpoint                    = "https://s3.cloud.mts.ru"
     force_path_style            = "true"
   }
 }
